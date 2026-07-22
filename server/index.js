@@ -11,7 +11,16 @@ const app = express();
 
 // Middleware
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://localhost:3000",
+      "https://securityauditdashboard.vercel.app",
+    ],
+    credentials: true,
+  }),
+);
 app.use(compression());
 app.use(express.json({ limit: process.env.MAX_UPLOAD_SIZE || "50mb" }));
 app.use(
