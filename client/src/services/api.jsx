@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const API_BASE_URL =
-  "https://security-audit-dashboard-backend.onrender.com/api/logs";
+  "https://security-audit-dashboard-backend.onrender.com/api/";
 
 const api = axios.create({
   baseURL: API_BASE_URL,

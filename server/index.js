@@ -11,16 +11,32 @@ const app = express();
 
 // Middleware
 app.use(helmet());
+
+// ✅ Fixed CORS configuration
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://localhost:3000",
-      "https://securityauditdashboard.vercel.app",
-    ],
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+
+      const allowedOrigins = [
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "https://security-audit-dashboard-chi.vercel.app",
+      ];
+
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        console.log(`Blocked origin: ${origin}`);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+
 app.use(compression());
 app.use(express.json({ limit: process.env.MAX_UPLOAD_SIZE || "50mb" }));
 app.use(
@@ -32,6 +48,11 @@ app.use(
 
 // Routes
 app.use("/api/logs", logRoutes);
+
+// Health check endpoint (optional but helpful)
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -54,9 +75,13 @@ const connectDB = async () => {
 };
 
 connectDB();
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
+  console.log(
+    `✅ CORS enabled for: http://localhost:3000, https://security-audit-dashboard-chi.vercel.app`,
+  );
 });
 
 module.exports = app;
