@@ -1,6 +1,26 @@
 import React, { useState } from "react";
-import { XMarkIcon, DocumentArrowUpIcon } from "@heroicons/react/24/outline";
+import {
+  XMarkIcon,
+  DocumentArrowUpIcon,
+  ClipboardDocumentIcon,
+} from "@heroicons/react/24/outline";
 import { logService } from "../services/api";
+
+// Sample JSON data
+const SAMPLE_LOGS = [
+  {
+    actor: "mohamedakthar.dev@gmail.com",
+    role: "admin",
+    action: "SYSTEM_UPDATE",
+    resource: "/api/system/update",
+    resourceType: "SYSTEM",
+    ipAddress: "192.168.51.12",
+    region: "eu-west-1",
+    severity: "CRITICAL",
+    status: "Unresolved",
+    timestamp: "2026-07-25T22:55:12Z",
+  },
+];
 
 const UploadModal = ({ isOpen, onClose, onUploadSuccess }) => {
   const [logs, setLogs] = useState("");
@@ -74,6 +94,13 @@ const UploadModal = ({ isOpen, onClose, onUploadSuccess }) => {
     }
   };
 
+  // Load sample data
+  const loadSampleData = () => {
+    setLogs(JSON.stringify(SAMPLE_LOGS, null, 2));
+    setError(null);
+    setSuccess(null);
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -130,9 +157,18 @@ const UploadModal = ({ isOpen, onClose, onUploadSuccess }) => {
 
               {/* Or Paste JSON */}
               <div className="mb-8">
-                <label className="block uppercase tracking-[3px] text-sm font-black mb-3">
-                  OR PASTE JSON DATA
-                </label>
+                <div className="flex justify-between items-center mb-3">
+                  <label className="block uppercase tracking-[3px] text-sm font-black">
+                    OR PASTE JSON DATA
+                  </label>
+                  <button
+                    type="button"
+                    onClick={loadSampleData}
+                    className="border-2 border-black px-4 py-2 text-sm font-black uppercase tracking-widest hover:bg-black hover:text-white transition-all flex items-center gap-2">
+                    <ClipboardDocumentIcon className="h-5 w-5" />
+                    LOAD SAMPLE
+                  </button>
+                </div>
                 <textarea
                   rows={12}
                   value={logs}

@@ -75,7 +75,7 @@ const useLogs = (initialFilters = {}) => {
 
     // Prevent concurrent requests
     if (isFetchingRef.current) {
-      console.log("Skipping concurrent request");
+      // console.log("Skipping concurrent request");
       return;
     }
 
@@ -85,7 +85,7 @@ const useLogs = (initialFilters = {}) => {
     setError(null);
 
     try {
-      console.log("Fetching logs with params:", params);
+      // console.log("Fetching logs with params:", params);
       const response = await logService.getLogs(params);
 
       setLogs(response.data.data || []);
@@ -120,7 +120,7 @@ const useLogs = (initialFilters = {}) => {
     }
 
     try {
-      console.log("Fetching filter options...");
+      // console.log("Fetching filter options...");
       const response = await logService.getFilterOptions();
       setFilterOptions((prev) => ({
         ...prev,
@@ -133,7 +133,7 @@ const useLogs = (initialFilters = {}) => {
   }, []);
 
   const updateFilters = useCallback((newFilters) => {
-    console.log("Updating filters:", newFilters);
+    // console.log("Updating filters:", newFilters);
     setFilters((prev) => ({ ...prev, ...newFilters }));
     // Reset to page 1 when filters change
     setPagination((prev) => ({ ...prev, page: 1 }));
