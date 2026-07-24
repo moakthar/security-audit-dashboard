@@ -28,7 +28,7 @@ The application supports high-volume log ingestion, advanced searching, server-s
 |-------------|-----|
 | **Frontend** | https://security-audit-dashboard-chi.vercel.app |
 | **Backend API** | https://security-audit-dashboard.onrender.com/api/logs |
-| **Health Check** | https://security-audit-backend.onrender.com/health |
+| **Health Check** | https://security-audit-dashboard.onrender.com/health |
 
 ---
 
